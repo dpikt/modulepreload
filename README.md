@@ -1,6 +1,6 @@
 # modulepreload
 
-Inject modulepreload tags into HTML to remove the waterfall problem in loading web modules.
+Inject modulepreload tags into HTML.
 
 ```sh
 $ npm install --save-dev modulepreload
