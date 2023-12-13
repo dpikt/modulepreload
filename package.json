@@ -1,0 +1,21 @@
+{
+  "name": "modulepreload",
+  "version": "1.0.0",
+  "description": "",
+  "main": "cli.js",
+  "bin": {
+    "modulepreload": "./cli.js"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "type": "module",
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@import-maps/resolve": "^2.0.0",
+    "cac": "^6.7.14",
+    "es-module-lexer": "^1.4.1",
+    "htmlparser2": "^9.0.0"
+  }
+}
