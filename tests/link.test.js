@@ -1,4 +1,4 @@
-import link from '../src/link.js';
+import { link } from '../src/inject.js';
 import { describe, it } from 'node:test';
 import fs from 'node:fs';
 import assert from 'node:assert';
