@@ -47,7 +47,6 @@ class ImportCollector {
           deps.map((dep) => this.visit(dep, resolvedImport))
         );
       }
-      // console.error(e)
     } else if (resolvedImport.protocol.startsWith("http")) {
       if (!this.noFetch) {
         const contents = await fetch(resolvedImport).then(res => res.text())
