@@ -29,19 +29,23 @@ class ImportCollector {
       resolvedImport = new URL(specifier, parent.origin)
     }
     if (!resolvedImport) {
-      throw 'could not resolve import: ' + specifier
+      console.warn(`WARNING: could not resolve import specifier: ${specifier} from parent: ${parent} - skipping`)
+      return
     };
     if (this.dependencies.has(resolvedImport.href)) return;
     this.dependencies.add(resolvedImport.href);
     if (resolvedImport.protocol === "file:") {
+      let contents = null
       try {
-        const contents = await fs.promises.readFile(resolvedImport, "utf8");
+        contents = await fs.promises.readFile(resolvedImport, "utf8");
+      } catch (e) {
+        console.warn('WARNING: could not read file: ' + resolvedImport.href + ' - skipping')
+      }
+      if (contents) {
         const deps = await getImports(contents);
         await Promise.all(
           deps.map((dep) => this.visit(dep, resolvedImport))
         );
-      } catch (e) {
-        console.warn('WARNING: could not read file: ' + resolvedImport.href + ' - skipping')
       }
     } else if (resolvedImport.protocol.startsWith("http")) {
       if (!this.noFetch) {
@@ -118,7 +122,14 @@ export function injectPreloads(contents, dependencies) {
   for (const dep of dependencies) {
     preloads += `<link rel="modulepreload" href="${dep}" />\n`;
   }
-  return contents.replace("</head>", `${preloads}</head>`);
+  if (contents.includes("</head>")) {
+    return contents.replace("</head>", `${preloads}</head>`);
+  } else if (contents.includes("</html>")) {
+    return contents.replace("<html>", `<html>\n${preloads}`);
+  } else {
+    console.warn('WARNING: could not find <head> or <html> in HTML - skipping.')
+    return contents;
+  }
 }
 
 export async function link(htmlContentsOrUrl, { baseUrl: providedBaseUrl, noFetch } = {}) {

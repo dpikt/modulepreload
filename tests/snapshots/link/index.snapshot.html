@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>My HTML File</title>
+    <script type="importmap">
+        {
+            "imports": {
+                "jquery": "https://cdn.skypack.dev/jquery"
+            }
+        }
+    </script>
+<link rel="modulepreload" href="/js/dep.js" />
+<link rel="modulepreload" href="/js/secondary-dep.js" />
+<link rel="modulepreload" href="/absolute-dep.js" />
+<link rel="modulepreload" href="https://cdn.skypack.dev/jquery" />
+</head>
+
+<body>
+    <h1>Hello, world!</h1>
+</body>
+<script type="module">
+    import { hello } from './js/dep.js';
+</script>
+
+</html>
